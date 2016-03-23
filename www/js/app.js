@@ -1,24 +1,46 @@
-// Ionic Starter App
+var urlServer = 'http://ulpgc-tasi-2016.herokuapp.com';
+var app = angular.module('app', ['ngSanitize', 'ngTouch'])
+	.controller('HomeController', function ($scope, $sce, $swipe, $http) {
+		$scope.splash = true;
+		$scope.noticias = null;
+		$scope.leftButtonShow = function () {
+			if ($scope.noticias) return $scope.actual < $scope.noticias.length - 1;
+			return false;
+		};
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+		setTimeout(function () {
+			$scope.splash = false;
+			$scope.$apply();
+		}, 3500); // ESTO ES PARA QUITAR EL SPLASH
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+		$http.get(urlServer + '/notices').then(function (data) {
+			$scope.noticias = data.data;
+			$scope.actual = $scope.noticias.length - 1;
+			for (var i = 0; i < $scope.noticias.length; i++) {
+				$scope.noticias[i].cuerpo = $sce.trustAsHtml($scope.noticias[i].cuerpo);
+			}
+			$scope.noticias[$scope.actual].clase = 'actual ';
 
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
-})
+		}, function (err) {
+			if (err) console.log((err));
+		});
+		var irseI = ' zoomOutLeft';
+		var irseD = ' zoomOutRight';
+		var entraD = ' zoomInRight';
+		var entraI = ' zoomInLeft';
+
+		$scope.left = function () {
+			$scope.noticias[$scope.actual].clase = irseD;
+			$scope.actual++;
+			$scope.noticias[$scope.actual].clase = entraI;
+		}
+		$scope.right = function () {
+			$scope.noticias[$scope.actual].clase = irseI;
+			$scope.actual--;
+			$scope.noticias[$scope.actual].clase = entraD;
+		}
+
+	})
+	.config(function ($locationProvider) {
+		$locationProvider.html5Mode(true);
+	});

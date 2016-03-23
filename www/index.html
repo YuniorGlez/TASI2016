@@ -1,34 +1,63 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+<html ng-app="app">
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+<head>
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Eii Informa</title>
+	<meta name="description" content="Eii Informa es la applicacion oficial de mensajeria y comunicación de la Escuela de Ingeniería Informática de la ULPGC">
+	<meta name="author" content="YuniorGlez">
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="css/animate.css">
+	<link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
+	<!-- ionic/angularjs js -->
+	<script src="lib/ionic/js/ionic.bundle.js"></script>
+	<script src="js/ngTouch.js"></script>
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+	<script src="js/app.js"></script>
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="cordova_plugins.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
-  </head>
-  <body ng-app="starter">
+</head>
 
-    <ion-pane>
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
-      </ion-header-bar>
-      <ion-content>
-      </ion-content>
-    </ion-pane>
-  </body>
+<body ng-controller="HomeController" class="flow-text">
+
+	<!-- Navbar -->
+	<nav class="navbar">
+		<img src="img/logoNavbar.png" alt="">
+	</nav>
+
+	<!-- Content -->
+	<div id="content" ng-swipe-left="right()" ng-swipe-right="left()">
+		<div>
+			<div id="splash" class="splash animated zoomIn" ng-hide="!splash">
+				<img src="img/bigIcon.png" alt="">
+			</div>
+			<div ng-show="!splash" class="protect">
+				<div ng-repeat="noticia in noticias" class="noticia animated zoomIn {{noticia.clase}}">
+					<img class="img" ng-src="{{noticia.img}}" />
+					<h5 class="title" ng-bind-html="noticia.titulo"></h5>
+					<p class="description" ng-bind-html="noticia.cuerpo"></p>
+					<p class="date" ng-if="noticia.fecha">Fecha de publicación {{noticia.fecha}}</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="bar bar-footer" ng-show="!splash">
+		<button class="button button-clear"  ng-click="left()" >
+			<i ng-show="leftButtonShow()"class="icon ion-ios-arrow-back"></i>
+		</button>
+		<button class="button button-clear"  ng-click="right()" >
+			<i ng-show="actual > 0"class="icon ion-ios-arrow-right"></i>
+		</button>
+	</div>
+
+</body>
+
 </html>

@@ -1,7 +1,7 @@
 {
-  "name": "app",
+  "name": "Internal Communiaction App",
   "version": "1.1.1",
-  "description": "App: An Ionic project",
+  "description": "Proyecto TASI2016 - Gestor de noticias, estructura",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",

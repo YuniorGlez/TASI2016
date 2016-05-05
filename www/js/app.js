@@ -1,5 +1,5 @@
-var urlServer = 'http://ulpgc-tasi-2016.herokuapp.com';
-var app = angular.module('app', ['ngSanitize', 'ngTouch'])
+var urlServer = 'https://ulpgc-tasi-2016.herokuapp.com';
+var app = angular.module('app', ['ionic', 'ionic.service','ngSanitize', 'ngTouch'])
 	.controller('HomeController', function ($scope, $sce, $swipe, $http) {
 		$scope.splash = true;
 		$scope.noticias = null;
@@ -41,6 +41,14 @@ var app = angular.module('app', ['ngSanitize', 'ngTouch'])
 		}
 
 	})
-	.config(function ($locationProvider) {
-		$locationProvider.html5Mode(true);
+	.run(function($ionicPlatform) {
+	  $ionicPlatform.ready(function() {
+		var push = new Ionic.Push({
+		  "debug": true
+		});
+
+		push.register(function(token) {
+		  alert("Device token:",token.token);
+		});
+	  });
 	});
